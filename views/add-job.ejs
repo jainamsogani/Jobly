@@ -1,0 +1,50 @@
+<%- include('partials/header') %>
+
+    <div id="add-job" class="container mt-3 py-5">
+        <h3 class="ms-3">Add Job</h3>
+
+        <form action="/add-job" method="post" class="row gy-2 gx-3 mt-3 ms-2 align-items-center">
+            <div class="col-lg-4 col-md-6">
+                <label for="position">Position</label>
+                <input type="text" class="form-control" name="position" id="position" placeholder="Software Engineer" autocomplete="off" required>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <label for="company">Company</label>
+                <div class="input-group">
+                    <div class="input-group-text"><i class="bi bi-building"></i></div>
+                    <input type="text" class="form-control" name="company" id="company" placeholder="Google" autocomplete="off" required>
+                </div>
+            </div>
+        <div class="col-lg-4 col-md-6">
+            <label for="location">Location</label>
+            <div class="input-group">
+            <div class="input-group-text"><i class="bi bi-geo-alt-fill"></i></div>
+            <input type="text" class="form-control" name="jobLocation" id="location" placeholder="Banglore" autocomplete="off" required>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <label for="status">Status</label>
+            <select class="form-select" name="status" id="status">
+            <option value="Pending" selected>Pending</option>
+            <option value="Interview">Interview</option>
+            <option value="Declined">Declined</option>
+            </select>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <label for="job-type">Job-Type</label>
+            <select class="form-select" name="jobType" id="job-type">
+            <option value="Full-Time" selected>Full-Time</option>
+            <option value="Internship">Internship</option>
+            <option value="Remote">Remote</option>
+            <option value="Part-Time">Part-Time</option>
+            <option value="Contract">Contract</option>
+            </select>
+        </div>
+        <div class="col-12">
+                <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        </form>
+    </div>
+
+
+<%- include('partials/footer') %>

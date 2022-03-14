@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+
+    <div class="card-group container mt-5">
+    <div class="card mx-3 border-3 rounded-3 border-danger">
+        <div class="card-body">
+        <div class="container">
+            <h1 class="card-text display-3 text-danger text-center"><%= pending %></h1>
+        </div>
+        <h3 class="card-title text-center">Pending Applications<i class="bi bi-briefcase-fill ms-1"></i></h3>
+        </div>
+    </div>
+    <div class="card mx-3 bl-3 border-3 rounded-3 border-success">
+    <div class="card-body">
+        <div class="container">
+            <h1 class="card-text display-3 text-success text-center"><%= interview %></h1>
+        </div>
+        <h3 class="card-title text-center">Interviews Scheduled<i class="bi bi-check-square-fill ms-1"></i></h3>
+        </div>
+    </div>
+    <div class="card mx-3 bl-3 border-3 rounded-3 border-primary">
+    <div class="card-body">
+        <div class="container">
+            <h1 class="card-text display-3 text-primary text-center"><%= declined %></h1>
+        </div>
+        <h3 class="card-title text-center">Jobs Declined<i class="bi bi-bug-fill ms-1"></i></h3>
+        </div>
+    </div>
+    </div>
+
+
+<%- include('partials/footer') %>

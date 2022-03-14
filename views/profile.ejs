@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+
+<div id="add-job" class="container mt-3 py-5">
+    <h3 class="ms-3">Profile</h3>
+
+    <form action="/profile" method="post" class="row gy-2 gx-3 mt-3 ms-2 align-items-center">
+        <div class="col-lg-4 col-md-6">
+            <label for="email">E-Mail</label>
+            <div class="input-group">
+                <div class="input-group-text">@</div>
+                <input type="email" class="form-control" name="email" id="email" placeholder="name@email.com" autocomplete="off" readonly>
+            </div>
+        </div>
+            <div class="col-lg-4 col-md-6">
+                <label for="name">Full Name</label>
+                <input type="text" class="form-control" name="name" id="name" placeholder="John Doe" autocomplete="off">
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <label for="number">Mobile Number</label>
+                <input type="number" class="form-control" name="number" id="number" placeholder="+91-925xxxxxxx" autocomplete="off">
+            </div>
+        <div class="col-lg-4 col-md-6">
+            <label for="location">Location</label>
+            <div class="input-group">
+            <div class="input-group-text"><i class="bi bi-geo-alt-fill"></i></div>
+            <input type="text" class="form-control" name="location" id="location" placeholder="Banglore" autocomplete="off">
+            </div>
+        </div>
+        <div class="col-12">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+        </form>
+</div>
+
+<%- include('partials/footer') %>
