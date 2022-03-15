@@ -62,17 +62,27 @@ a.navbar-brand img{
     border-radius: 5%;
 }
 
+.job-card .Pending{
+    color: darkgoldenrod;
+    background-color: rgb(243, 212, 134);
+}
+
+.job-card .Online-Assessment{
+    color: gray;
+    background-color: rgb(219, 219, 219);
+}
+
 .job-card .Interview{
     color: darkblue;
     background-color: rgb(137, 137, 216);
 }
 
+.job-card .Offered{
+    color: darkgreen;
+    background-color: rgb(137, 216, 137);
+}
+
 .job-card .Declined{
     color: darkred;
     background-color: rgb(216, 137, 137);
-}
-
-.job-card .Pending{
-    color: darkgreen;
-    background-color: rgb(137, 216, 137);
 }

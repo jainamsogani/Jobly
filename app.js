@@ -2,7 +2,6 @@ const express = require('express');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const Date = require('./Date')
 
 const app = express();
 
@@ -25,25 +24,55 @@ const jobsSchema = {
 
 const Job = mongoose.model('Job', jobsSchema);
 
+function getDate(s) {
+  let monthNames =["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  let year = s.substr(0, 4);
+
+  let monthIndex = Number(s.substr(5, 2))-1;
+  let monthName = monthNames[monthIndex];
+
+  let day = s.substr(8, 2);
+  return `${day}-${monthName}-${year}`;
+}
+
 app.get('/', (req, res) => {
 
   Job.count({status: 'Pending'}, (err, pending) => {
     if(err){
       console.log(err);
     }else{
-      Job.count({status: 'Interview'}, (err, interview) => {
-        if(err){
+      Job.count({ status: 'Online-Assessment' }, (err, onlineAssessment) => {
+        if (err) {
           console.log(err);
-        }else{
-          Job.count({status: 'Declined'}, (err, declined) => {
-            if(err){
+        } else {
+          Job.count({ status: 'Interview' }, (err, interview) => {
+            if (err) {
               console.log(err);
-            }else{
-              res.render('stats', {pending: pending, interview: interview, declined: declined});
+            } else {
+              Job.count({ status: 'Offered' }, (err, offered) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  Job.count({ status: 'Declined' }, (err, declined) => {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      res.render('stats', {
+                        pending: pending,
+                        interview: interview,
+                        offered: offered,
+                        onlineAssessment: onlineAssessment,
+                        declined: declined,
+                      });
+                    }
+                  });
+                }
+              });
             }
-          })
+          });
         }
-      })
+      });
     }
   })
 });
@@ -102,6 +131,7 @@ app.get('/delete/:_id', (req, res) => {
 
 app.post('/add-job', (req, res) => {
   const filled = req.body;
+  // getDate(filled.date);
 
   const newJob = new Job({
     position: filled.position,
@@ -109,9 +139,10 @@ app.post('/add-job', (req, res) => {
     jobLocation: filled.jobLocation,
     status: filled.status,
     jobType: filled.jobType,
-    date: Date,
+    date: getDate(filled.date),
   });
 
+  console.log(newJob);
   newJob.save();
   res.redirect('/add-job');
 });
@@ -131,9 +162,6 @@ app.post('/all-jobs', (req, res) => {
     if(err){
       console.log(err);
     }else{
-      if(err){
-        console.log(err);
-      }else{
         Job.find(filled, (err, jobs) => {
           if(typeof filled.status === 'undefined'){
             filled.status = 'All';
@@ -146,15 +174,13 @@ app.post('/all-jobs', (req, res) => {
           res.render('all-jobs', { totalJobs: count, filled: filled, allJobs: jobs });
         });
       }
-    }
   })
 });
 
 app.post('/edit/:_id', (req, res) => {
   const idToEdit = req.params._id;
   const updatedData = req.body;
-  updatedData.date = Date;
-  console.log(updatedData);
+  updatedData.date = getDate(updatedData.date);
 
   Job.updateOne({ _id: idToEdit }, updatedData, (err) => {
     if (err) {

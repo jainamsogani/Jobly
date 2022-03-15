@@ -20,10 +20,22 @@
                 <option value="Pending">Pending</option>
             <% } %>
 
+            <% if(filled.status == 'Online-Assessment'){ %>
+                <option value="Online-Assessment" selected>Online Assessment</option>
+            <% } else{ %>
+                <option value="Online-Assessment">Online Assessment</option>
+            <% } %>
+
             <% if(filled.status == 'Interview'){ %>
                 <option value="Interview" selected>Interview</option>
             <% } else{ %>
                 <option value="Interview">Interview</option>
+            <% } %>
+
+            <% if(filled.status == 'Offered'){ %>
+                <option value="Offered" selected>Offered</option>
+            <% } else{ %>
+                <option value="Offered">Offered</option>
             <% } %>
             
             <% if(filled.status == 'Declined'){ %>

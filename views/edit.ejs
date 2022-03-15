@@ -34,11 +34,23 @@
             <% } else { %>
                 <option value="Pending">Pending</option>
             <% } %>
+
+            <% if(job.status == 'Online-Assessment'){ %>
+                <option value="Online-Assessment" selected>Online Assessment</option>
+            <% } else { %>
+                <option value="Online-Assessment">Online Assessment</option>
+            <% } %>
             
             <% if(job.status == 'Interview'){ %>
                 <option value="Interview" selected>Interview</option>
             <% } else { %>
                 <option value="Interview">Interview</option>
+            <% } %>
+
+            <% if(job.status == 'Offered'){ %>
+                <option value="Offered" selected>Offered</option>
+            <% } else { %>
+                <option value="Offered">Offered</option>
             <% } %>
 
             <% if(job.status == 'Declined'){ %>
@@ -81,6 +93,13 @@
                 <option value="Contract">Contract</option>
             <% } %>
             </select>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <label for="date">Date</label>
+                <div class="input-group">
+                    <div class="input-group-text"><i class="bi bi-calendar-date-fill"></i></div>
+                    <input type="date" class="form-control" name="date" id="date" autocomplete="off">
+                </div>
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Submit</button>
