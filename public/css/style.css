@@ -2,7 +2,7 @@
     font-family: 'Baloo Bhaina 2', cursive;
 }
 
-/* #home::before{
+/* #landing::before{
     content: "";
     position: absolute;
     background: url('../images/Happy\ man\ standing\ under\ spotlight.jpg');
@@ -15,7 +15,7 @@
 } */
 
 /* @media screen and (max-width: 768px) {
-    #home::before{
+    #landing::before{
     content: "";
     position: absolute;
     background: url('../images/Modern\ Talent\ Search\ Composition\ Illustration.jpg');
@@ -28,20 +28,20 @@
 }
 } */
 
-#home .content, #registerPage .content{
+#landing .content, #registerPage .content{
     height: 100vh;
     margin: 0;
 }
 
-#home .login, #registerPage .register{
+#landing .login, #registerPage .register{
     background-color: #fff;
 }
 
-#home button.loginBtn{
+#landing button.loginBtn{
     width: 100%;
 }
 
-#home a.register{
+#landing a.register{
     font-weight: 700;
     text-decoration: none;
 }

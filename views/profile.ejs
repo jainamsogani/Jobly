@@ -8,14 +8,14 @@
             <label for="email">E-Mail</label>
             <div class="input-group">
                 <div class="input-group-text">@</div>
-                <input type="email" class="form-control" name="email" id="email" placeholder="name@email.com" autocomplete="off" readonly>
+                <input type="email" class="form-control" name="email" id="email" placeholder="<%= user.username %>" autocomplete="off" readonly>
             </div>
         </div>
             <div class="col-lg-4 col-md-6">
                 <label for="name">Full Name</label>
                 <div class="input-group">
                 <div class="input-group-text"><i class="bi bi-person-badge-fill"></i></div>
-                <input type="text" class="form-control" name="name" id="name" placeholder="John Doe" autocomplete="off">
+                <input type="text" class="form-control" name="name" id="name" placeholder="<%= user.name %>" autocomplete="off">
             </div>
                 
             </div>
@@ -23,7 +23,7 @@
                 <label for="number">Mobile Number</label>
                 <div class="input-group">
                 <div class="input-group-text"><i class="bi bi-phone-fill"></i></div>
-                <input type="number" class="form-control" name="number" id="number" placeholder="+91-925xxxxxxx" autocomplete="off">
+                <input type="number" class="form-control" name="number" id="number" placeholder="<%= user.number %>" autocomplete="off">
             </div>
                 
             </div>
@@ -31,7 +31,7 @@
             <label for="location">Location</label>
             <div class="input-group">
             <div class="input-group-text"><i class="bi bi-geo-alt-fill"></i></div>
-            <input type="text" class="form-control" name="location" id="location" placeholder="Banglore" autocomplete="off">
+            <input type="text" class="form-control" name="location" id="location" placeholder="<%= user.location %>" autocomplete="off">
             </div>
         </div>
         
