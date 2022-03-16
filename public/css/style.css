@@ -2,6 +2,50 @@
     font-family: 'Baloo Bhaina 2', cursive;
 }
 
+/* #home::before{
+    content: "";
+    position: absolute;
+    background: url('../images/Happy\ man\ standing\ under\ spotlight.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    opacity: 0.8;
+} */
+
+/* @media screen and (max-width: 768px) {
+    #home::before{
+    content: "";
+    position: absolute;
+    background: url('../images/Modern\ Talent\ Search\ Composition\ Illustration.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    opacity: 0.8;
+}
+} */
+
+#home .content, #registerPage .content{
+    height: 100vh;
+    margin: 0;
+}
+
+#home .login, #registerPage .register{
+    background-color: #fff;
+}
+
+#home button.loginBtn{
+    width: 100%;
+}
+
+#home a.register{
+    font-weight: 700;
+    text-decoration: none;
+}
+
 a.navbar-brand{
     font-size: 3em;
     font-weight: 800;

@@ -9,9 +9,16 @@
   "author": "Jainam Sogani",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.2",
+    "dotenv": "^16.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.3",
-    "mongoose": "^6.2.6"
+    "express-session": "^1.17.2",
+    "mongoose": "^6.2.6",
+    "mongoose-encryption": "^2.1.2",
+    "passport": "^0.5.2",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^7.0.0"
   }
 }

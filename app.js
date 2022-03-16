@@ -1,7 +1,13 @@
+require('dotenv').config();
 const express = require('express');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const passport = require('passport');
+const passportLocalMongoose = require('passport-local-mongoose');
 const bodyParser = require('body-parser');
+const Job = require('./models/Job');
+// const User = require('./models/User');
 
 const app = express();
 
@@ -9,20 +15,19 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 mongoose.connect('mongodb://localhost:27017/jobDB', {
   useNewUrlParser: true,
 });
-
-const jobsSchema = {
-  position: String,
-  company: String,
-  jobLocation: String,
-  status: String,
-  jobType: String,
-  date: String
-};
-
-const Job = mongoose.model('Job', jobsSchema);
 
 function getDate(s) {
   let monthNames =["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -35,6 +40,14 @@ function getDate(s) {
   let day = s.substr(8, 2);
   return `${day}-${monthName}-${year}`;
 }
+
+app.get('/home', (req, res) => {
+  res.render('home');
+});
+
+app.get('/register', (req, res) => {
+  res.render('register');
+});
 
 app.get('/', (req, res) => {
 
