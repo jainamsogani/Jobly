@@ -8,6 +8,9 @@
   },
   "author": "Jainam Sogani",
   "license": "ISC",
+  "engines": {
+    "node": "16.14.0"
+  },
   "dependencies": {
     "alert": "^5.0.10",
     "bcrypt": "^5.0.1",

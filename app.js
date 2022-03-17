@@ -30,8 +30,16 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect('mongodb://localhost:27017/jobDB', {
+mongoose.connect(process.env.DBURL, {
   useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error: '));
+db.once('open', () => {
+  console.log('Connected to db');
 });
 
 passport.use(User.createStrategy());
@@ -51,8 +59,8 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: 'http://localhost:3000/auth/google/jobly',
-      userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'
+      callbackURL: 'https://joblly.herokuapp.com/auth/google/jobly',
+      userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
     },
     function (accessToken, refreshToken, profile, cb) {
       console.log(profile);
@@ -459,6 +467,8 @@ app.post('/profile', (req, res) => {
   })
 });
 
-app.listen(3000, (req, res) => {
-  console.log('Server is running on port 3000....');
-});
+const port = process.env.PORT || '3000'
+
+app.listen(port, () => {
+    console.log("Server has started successfully!");
+})
