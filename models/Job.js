@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const jobsSchema = {
   position: String,
+  username: String,
   company: String,
   jobLocation: String,
   status: String,

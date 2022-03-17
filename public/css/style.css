@@ -2,17 +2,17 @@
     font-family: 'Baloo Bhaina 2', cursive;
 }
 
-/* #landing::before{
+#landing::before, #registerPage::before{
     content: "";
     position: absolute;
-    background: url('../images/Happy\ man\ standing\ under\ spotlight.jpg');
+    background: url('../images/v748-toon-103.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     height: 100%;
     width: 100%;
     z-index: -1;
-    opacity: 0.8;
-} */
+    opacity: 0.6;
+}
 
 /* @media screen and (max-width: 768px) {
     #landing::before{

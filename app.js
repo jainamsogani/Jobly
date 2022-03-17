@@ -118,43 +118,72 @@ app.get('/logout', (req, res) => {
 app.get('/stats', (req, res) => {
 
   if(req.isAuthenticated()){
-    Job.count({ status: 'Pending' }, (err, pending) => {
-      if (err) {
-        console.log(err);
-      } else {
-        Job.count({ status: 'Online-Assessment' }, (err, onlineAssessment) => {
-          if (err) {
-            console.log(err);
-          } else {
-            Job.count({ status: 'Interview' }, (err, interview) => {
-              if (err) {
-                console.log(err);
-              } else {
-                Job.count({ status: 'Offered' }, (err, offered) => {
-                  if (err) {
-                    console.log(err);
-                  } else {
-                    Job.count({ status: 'Declined' }, (err, declined) => {
-                      if (err) {
-                        console.log(err);
-                      } else {
-                        res.render('stats', {
-                          pending: pending,
-                          interview: interview,
-                          offered: offered,
-                          onlineAssessment: onlineAssessment,
-                          declined: declined,
-                        });
-                      }
-                    });
-                  }
-                });
-              }
-            });
-          }
-        });
+
+    var pending = 0;
+    var onlineAssessment = 0;
+    var interview = 0;
+    var offered = 0;
+    var declined = 0;
+
+    req.user.jobs.forEach(job => {
+      if(job.status == 'Pending'){
+        pending += 1;
+      } else if(job.status == 'Online-Assessment'){
+        onlineAssessment += 1;
+      } else if(job.status == 'Interview'){
+        interview += 1;
+      }else if(job.status == 'Offered'){
+        offered += 1;
+      }else{
+        declined += 1;
       }
     });
+
+    res.render('stats', {
+      pending: pending,
+      interview: interview,
+      offered: offered,
+      onlineAssessment: onlineAssessment,
+      declined: declined,
+    });
+
+    // Job.count({ status: 'Pending' }, (err, pending) => {
+    //   if (err) {
+    //     console.log(err);
+    //   } else {
+    //     Job.count({ status: 'Online-Assessment' }, (err, onlineAssessment) => {
+    //       if (err) {
+    //         console.log(err);
+    //       } else {
+    //         Job.count({ status: 'Interview' }, (err, interview) => {
+    //           if (err) {
+    //             console.log(err);
+    //           } else {
+    //             Job.count({ status: 'Offered' }, (err, offered) => {
+    //               if (err) {
+    //                 console.log(err);
+    //               } else {
+    //                 Job.count({ status: 'Declined' }, (err, declined) => {
+    //                   if (err) {
+    //                     console.log(err);
+    //                   } else {
+    //                     res.render('stats', {
+    //                       pending: pending,
+    //                       interview: interview,
+    //                       offered: offered,
+    //                       onlineAssessment: onlineAssessment,
+    //                       declined: declined,
+    //                     });
+    //                   }
+    //                 });
+    //               }
+    //             });
+    //           }
+    //         });
+    //       }
+    //     });
+    //   }
+    // });
   } else {
     res.redirect('/');
   }
@@ -168,24 +197,12 @@ app.get('/all-jobs', (req, res) => {
         jobType: 'All',
       };
 
-      Job.count((err, count) => {
-        if (err) {
-          console.log(err);
-        } else {
-          Job.find((err, jobs) => {
-            if (err) {
-              console.log(err);
-            } else {
-              res.render('all-jobs', {
-                totalJobs: count,
-                filled: filled,
-                allJobs: jobs,
-              });
-            }
-          });
-        }
+      res.render('all-jobs', {
+        totalJobs: req.user.jobs.length,
+        filled: filled,
+        allJobs: req.user.jobs,
       });
-    }else{
+    } else {
       res.redirect('/');
     }
 });
@@ -212,6 +229,7 @@ app.get('/edit/:_id', (req, res) => {
 
   if(req.isAuthenticated()){
     const idToEdit = req.params._id;
+    // console.log(idToEdit);
     Job.findOne({ _id: idToEdit }, (err, job) => {
       if (err) {
         console.log(err);
@@ -228,11 +246,21 @@ app.get('/delete/:_id', (req, res) => {
 
   if(req.isAuthenticated()){
     const idToDelete = req.params._id;
-    Job.deleteOne({_id: idToDelete}, (err) => {
-      if(err){
+    Job.deleteOne({ _id: idToDelete }, (err) => {
+      if (err) {
         console.log(err);
-      }else{
-        res.redirect('/all-jobs');
+      } else {
+        User.findByIdAndUpdate(
+          req.user._id,
+          { $pull: { jobs: { _id: idToDelete } } },
+           (err, model) => {
+            if (err) {
+              console.log(err);
+            }else{
+              res.redirect('/all-jobs');
+            }
+          }
+        );
       }
     });
   }else{
@@ -251,7 +279,7 @@ app.post(
 
 app.post('/register', (req, res) => {
   const filled = req.body;
-  console.log(filled);
+  // console.log(filled);
 
   var newUser = new User({
     username: filled.username,
@@ -284,39 +312,71 @@ app.post('/add-job', (req, res) => {
     date: getDate(filled.date),
   });
 
-  console.log(newJob);
-  newJob.save();
-  res.redirect('/add-job');
+  // console.log(newJob);
+
+  User.findById(req.user._id, (err, foundUser) => {
+
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+          foundUser.jobs.push(newJob);
+          foundUser.save(() => {
+            newJob.username = foundUser.username;
+            newJob.save();
+            res.redirect('/all-jobs');
+        });
+      } else {
+        res.redirect('/');
+      }
+    }
+  });
 });
 
 app.post('/all-jobs', (req, res) => {
+
   const filled = req.body;
-  
-  if(filled.status == 'All'){
-    delete filled.status;
-  }
+  var jobs = [];
 
-  if(filled.jobType == 'All'){
-    delete filled.jobType;
-  }
+  req.user.jobs.forEach(job => {
+    var flag = 1;
 
-  Job.count(filled, (err, count) => {
-    if(err){
-      console.log(err);
-    }else{
-        Job.find(filled, (err, jobs) => {
-          if(typeof filled.status === 'undefined'){
-            filled.status = 'All';
-          }
+    if((filled.status == 'All') || (filled.status == job.status)){
+      flag &= 1;
+    } else {
+      flag = 0;
+    }
 
-          if (typeof filled.jobType === 'undefined') {
-            filled.jobType = 'All';
-          }
+    if ((filled.jobType == 'All') || (filled.jobType == job.jobType)) {
+      flag &= 1;
+    } else {
+      flag = 0;
+    }
 
-          res.render('all-jobs', { totalJobs: count, filled: filled, allJobs: jobs });
-        });
-      }
-  })
+    if(flag == 1){
+      jobs.push(job);
+    }
+  });
+
+  res.render('all-jobs', { totalJobs: jobs.length, filled: filled, allJobs: jobs });
+
+  // Job.count(filled, (err, count) => {
+  //   if(err){
+  //     console.log(err);
+  //   }else{
+  //       Job.find(filled, (err, jobs) => {
+  //         if(typeof filled.status === 'undefined'){
+  //           filled.status = 'All';
+  //         }
+
+  //         if (typeof filled.jobType === 'undefined') {
+  //           filled.jobType = 'All';
+  //         }
+
+  //         res.render('all-jobs', { totalJobs: count, filled: filled, allJobs: jobs });
+  //       });
+  //     }
+  // })
 });
 
 app.post('/edit/:_id', (req, res) => {
@@ -334,7 +394,38 @@ app.post('/edit/:_id', (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      res.redirect('/all-jobs');
+      User.updateOne(
+        { username: req.user.username, 'jobs._id': idToEdit },
+        {
+          $set: {
+            'jobs.$.position': updatedData.position,
+            'jobs.$.company': updatedData.company,
+            'jobs.$.jobLocation': updatedData.jobLocation,
+            'jobs.$.status': updatedData.status,
+            'jobs.$.jobType': updatedData.jobType,
+            'jobs.$.date': updatedData.date,
+          },
+        }, (err) => {
+          if(err){
+            console.log(err);
+          }else{
+            res.redirect('/all-jobs');
+          }
+        }
+      );
+      // req.user.jobs.forEach(job => {
+      //   if(job._id == idToEdit){
+      //     console.log('I am in!');
+      //     job.position = updatedData.position;
+      //     job.company = updatedData.company;
+      //     job.jobLocation = updatedData.jobLocation;
+      //     job.status = updatedData.status;
+      //     job.jobType = updatedData.jobType;
+      //     job.date = updatedData.date;
+      //   }
+      // });
+
+      // res.redirect('/all-jobs');
     }
   });
 });

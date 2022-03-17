@@ -9,7 +9,17 @@ const usersSchema = new mongoose.Schema({
   number: Number,
   location: String,
   password: String,
-  jobs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Job' }],
+  jobs: [
+    {
+      id: { type: mongoose.Schema.Types.ObjectId, ref: 'Job' },
+      position: String,
+      company: String,
+      jobLocation: String,
+      status: String,
+      jobType: String,
+      date: String,
+    },
+  ],
 });
 
 usersSchema.plugin(passportLocalMongoose);
