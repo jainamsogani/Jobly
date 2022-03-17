@@ -30,14 +30,14 @@
     <div id="registerPage">
         <div class="row justify-content-center align-content-center content">
         <div class="col-auto">
-                <div class="container border rounded-2 border-dark py-4 register">
+                <div class="container border rounded-2 border-dark pt-4 pb-3 register">
                     <div class="text-center">
                     <a class="navbar-brand" href="/">
                 <img src="../images/android-chrome-192x192.png" alt="" class="align-text-center mb-1">
                 Jobly
                 </a>
                 </div>
-                <h4 class="ms-3">Register</h4>
+                <h4 class="ms-3 mt-4">Register</h4>
                 <form action="/register" method="post" class="row gy-2 gx-3 ms-2 align-items-center">
                     <div class="col-lg-4 col-md-6">
                         <div class="input-group">
@@ -54,7 +54,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="input-group">
                     <div class="input-group-text">@</div>
-                    <input type="email" class="form-control" name="email" id="email" placeholder="Enter Your Email" autocomplete="off" required>
+                    <input type="email" class="form-control" name="username" id="username" placeholder="Enter Your Email" autocomplete="off" required>
                 </div>
             </div>
         <div class="col-lg-4 col-md-6">
@@ -70,6 +70,12 @@
                 <button type="submit" class="btn btn-success">Register</button>
         </div>
         </form><hr class="ms-3">
+        <div class="text-center">
+                  <a href="/auth/google" class="google text-danger">
+                    <i class="bi bi-google"></i>
+                    Sign Up with Google
+                  </a>
+                </div>
             </div>
             </div>
         </div>

@@ -37,12 +37,7 @@
     background-color: #fff;
 }
 
-#landing button.loginBtn{
-    width: 100%;
-}
-
-#landing a.register{
-    font-weight: 700;
+#landing a.register, #landing a.google, #registerPage a.google{
     text-decoration: none;
 }
 

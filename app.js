@@ -5,12 +5,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const session = require('express-session');
 const passport = require('passport');
-var LocalStrategy = require('passport-local');
+const LocalStrategy = require('passport-local');
 const passportLocalMongoose = require('passport-local-mongoose');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const findOrCreate = require('mongoose-findorcreate');
 const bodyParser = require('body-parser');
 const Job = require('./models/Job');
 const User = require('./models/User');
-const Date = require('./Date')
+const Date = require('./Date');
 
 const app = express();
 
@@ -32,17 +34,41 @@ mongoose.connect('mongodb://localhost:27017/jobDB', {
   useNewUrlParser: true,
 });
 
+passport.use(User.createStrategy());
+
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+  User.findById(id, function (err, user) {
+    done(err, user);
+  });
+});
+
 passport.use(
-  new LocalStrategy(
+  new GoogleStrategy(
     {
-      usernameField: 'email',
+      clientID: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      callbackURL: 'http://localhost:3000/auth/google/jobly',
+      userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'
     },
-    User.authenticate()
+    function (accessToken, refreshToken, profile, cb) {
+      console.log(profile);
+      User.findOrCreate(
+        {
+          googleId: profile.id,
+          username: profile.id,
+          name: profile.displayName,
+        },
+        function (err, user) {
+          return cb(err, user);
+        }
+      );
+    }
   )
 );
-
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 function getDate(s) {
   let monthNames =["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -70,10 +96,24 @@ app.get('/register', (req, res) => {
   res.render('register');
 });
 
+app.get(
+  '/auth/google',
+  passport.authenticate('google', { scope: ['profile'] })
+);
+
+app.get(
+  '/auth/google/jobly',
+  passport.authenticate('google', { failureRedirect: '/' }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/stats');
+  }
+);
+
 app.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
-})
+});
 
 app.get('/stats', (req, res) => {
 
@@ -214,7 +254,7 @@ app.post('/register', (req, res) => {
   console.log(filled);
 
   var newUser = new User({
-    username: filled.email,
+    username: filled.username,
     name: filled.name,
     number: filled.number,
     location: filled.location,
@@ -303,7 +343,7 @@ app.post('/profile', (req, res) => {
   
   const updatedData = req.body;
 
-  delete updatedData.email;
+  delete updatedData.username;
 
   if(updatedData.name == ''){
     delete updatedData.name;

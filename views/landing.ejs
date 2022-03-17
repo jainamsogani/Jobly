@@ -31,7 +31,7 @@
     <div id="landing">
 
         <div class="row justify-content-center align-items-center content">
-            <div class="col-lg-4 text-center mb-5">
+            <div class="col-lg-4 text-center">
                 <h4>Do you miss your OAs?</h4>
                 <h4>Forget to prepare for Interview?</h4>
                 <h4>Not Anymore.</h4>
@@ -45,14 +45,19 @@
                 <h4 class="text-center mb-3">Login</h4>
                 <form action="/login" method="post">
                 <div class="form-group">
-                    <input type="email" class="form-control my-2 mx-auto" name="email" placeholder="Email" required>
+                    <input type="email" class="form-control my-2 mx-auto" name="username" placeholder="Email" required>
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control my-2 mx-auto" name="password" placeholder="Password" required>
                 </div>
-                <button type="submit" class="btn btn-primary loginBtn">Login</button>
-                </form><hr>
-            <p class="text-center pb-0 mb-0">Not a member yet? <a href="/register" class="register fs-5">Register</a></p>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <button class="btn btn-success"><a href="/register" class="register text-light">Register</a></button> <hr>
+                <div class="text-center">
+                <a href="/auth/google" class="google mx-2 text-danger">
+                    <i class="bi bi-google"></i>
+                    Sign In with Google
+                </a>
+                </div>
             </div>
             </div>
         </div>
