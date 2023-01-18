@@ -1,5 +1,5 @@
 # Jobly
-Live at [https://joblly.herokuapp.com/](https://joblly.herokuapp.com/).
+Live at [https://jittery-pig-cape.cyclic.app/](https://jittery-pig-cape.cyclic.app/).
 
 Jobly helps you to track your Job Applications!
 
